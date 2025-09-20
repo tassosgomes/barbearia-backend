@@ -38,9 +38,9 @@ Estabelecer a solução ASP.NET Core 8 com estrutura em camadas (Domain, Applica
 - Pipeline CI executa com sucesso build e testes de fumaça.
 - Documentação de variáveis de ambiente e containers disponível para o time.
 
-  - [ ] 1.0 Configurar fundação da API .NET, soluções e CI/CD ✅ CONCLUÍDA
-  - [ ] 1.1 Implementação completada
-  - [ ] 1.2 Definição da tarefa, PRD e tech spec validados
-  - [ ] 1.3 Análise de regras e conformidade verificadas
-  - [ ] 1.4 Revisão de código completada
-  - [ ] 1.5 Pronto para deploy
+- [x] 1.0 Configurar fundação da API .NET, soluções e CI/CD ✅ CONCLUÍDA
+  - [x] 1.1 Implementação completada
+  - [x] 1.2 Definição da tarefa, PRD e tech spec validados
+  - [x] 1.3 Análise de regras e conformidade verificadas
+  - [x] 1.4 Revisão de código completada
+  - [x] 1.5 Pronto para deploy
