@@ -63,7 +63,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseSerilogRequestLogging();
 app.UseExceptionHandler();
-app.UseHttpsRedirection();
+
+if (!app.Configuration.GetValue<bool>("DOTNET_RUNNING_IN_CONTAINER", false)) app.UseHttpsRedirection();
+
 app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = HealthCheckResponseWriter.WriteAsync }).RequireAuthorization(HealthCheckPolicies.HealthCheck);
