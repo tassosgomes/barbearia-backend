@@ -2,6 +2,7 @@ namespace Barbearia.Api.Tests.Health;
 
 using System.Net;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 public sealed class HealthEndpointTests : IClassFixture<WebApplicationFactory<Program>>

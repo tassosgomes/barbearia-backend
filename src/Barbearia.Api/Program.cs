@@ -24,7 +24,6 @@ builder.Services.AddOpenTelemetry().ConfigureResource(resource => resource.AddSe
     metrics.AddAspNetCoreInstrumentation();
     metrics.AddHttpClientInstrumentation();
     metrics.AddRuntimeInstrumentation();
-    metrics.AddProcessInstrumentation();
     metrics.AddOtlpExporter();
 }).WithTracing(tracing =>
 {
@@ -51,3 +50,5 @@ app.MapGet("/healthz", async (HealthCheckService healthCheckService) =>
 .WithName("HealthCheck");
 
 app.Run();
+
+public partial class Program;

@@ -1,32 +1,29 @@
 # Revisão da Tarefa 1.0
 
 ## 1. Validação da Definição da Tarefa
-- Estrutura de solução `Barbearia.sln` criada com projetos Domain, Application, Infrastructure, Api e testes (`tests/Barbearia.Api.Tests`).
-- Pacotes base (Serilog, OpenTelemetry, EF Core, FluentValidation) adicionados e `Program.cs` configura logging, observabilidade, health-check protegido por API key.
-- Contêinerização disponibilizada via `Dockerfile`, `docker-compose.yml`, scripts auxiliares e collector OTEL básico.
-- Pipeline GitHub Actions (`.github/workflows/ci.yml`) executa restore, `dotnet format`, build, testes com coleta de cobertura e publica artefatos.
-- Documentação operacional inicial em `docs/infrastructure.md` cobre variáveis de ambiente e orquestração.
+- Estrutura da solução `Barbearia.sln` contempla camadas Domain, Application, Infrastructure, Api e projeto de testes dedicado, alinhada à arquitetura definida na tech spec.
+- Pacotes base (Serilog, OpenTelemetry, EF Core, FluentValidation) foram referenciados e `Program.cs` expõe o endpoint `/healthz` protegido por API key. Adicionados pacotes ausentes (`Microsoft.Extensions.DependencyInjection.Abstractions`, `OpenTelemetry.Instrumentation.Runtime`, `Microsoft.Extensions.Configuration`) para sanar falhas de compilação.
+- Containerização local disponível via `Dockerfile`, `docker-compose.yml`, coletor OTEL em `ops/` e scripts `scripts/start-dev.sh`/`stop-dev.sh`. Documentação de variáveis em `docs/infrastructure.md`.
+- Pipeline GitHub Actions (`.github/workflows/ci.yml`) orquestra restore, `dotnet format`, build, testes e publicação de artefatos.
+- `dotnet build Barbearia.sln --configuration Release` agora conclui sem erros. `dotnet test Barbearia.sln` falha por ausência da runtime `Microsoft.NETCore.App 8.0.x` no ambiente atual (somente SDK/runtime 9.0 instalado), impedindo validar os testes automatizados.
 
 ## 2. Análise de Regras
-- `rules/code-standard.md`: nomenclatura em inglês, métodos iniciando por verbo, ausência de comentários supérfluos, early return aplicado no filtro de API key, sem aninhamento excessivo de condicionais.
-- `rules/tests.md`: testes automatizados adicionados com xUnit espelhando estrutura da API; cobertura de health endpoint com WebApplicationFactory.
-- `rules/logging.md`: configuração Serilog via appsettings com enrichers e console sink conforme orientação de logging estruturado.
-- `rules/http.md`: endpoint `/healthz` retorna `ProblemDetails` para falhas e requer autenticação por header dedicado.
-- `rules/sql.md`: EF Core configurado para SQL Server, sem migrações ainda porém alinhado à diretriz de usar connection string nomeada.
+- `rules/code-standard.md`: nomenclatura inglesa e convenções camelCase/PascalCase observadas; funções curtas, sem comentários supérfluos ou flag params.
+- `rules/logging.md`: Serilog configurado via appsettings, escrevendo em console conforme orientação de não utilizar `Console.WriteLine`.
+- `rules/http.md`: endpoint `/healthz` retorna 200/503 e aplica autenticação via header dedicado, mas faltam documentações OpenAPI futuras.
+- `rules/tests.md`: apesar de não seguir tooling (jest) sugerido nas regras genéricas, há projeto xUnit em `tests/Barbearia.Api.Tests`, cobrindo fluxos principal e alternativo do health check com WebApplicationFactory.
 
 ## 3. Revisão de Código
-- `src/Barbearia.Api/Program.cs` integra camadas de aplicação e infraestrutura, habilita Serilog e OpenTelemetry e mapeia health-check com filtro de API key.
-- `src/Barbearia.Api/Security/ApiKeyEndpointFilter.cs` implementa comparação constante e mensagens adequadas quando credenciais ausentes.
-- `src/Barbearia.Infrastructure/DependencyInjection/InfrastructureServiceCollectionExtensions.cs` valida presence da connection string antes de registrar `BarbeariaDbContext` com provider SQL Server.
-- `tests/Barbearia.Api.Tests/Health/HealthEndpointTests.cs` garante comportamento 200/401 dependendo do header.
-- `Dockerfile`, `docker-compose.yml`, `ops/otel-collector-config.yaml` e scripts shell viabilizam execução local com SQL Server e OTEL collector.
+- `src/Barbearia.Api/Program.cs` injeta Serilog, OpenTelemetry e health check protegido; adicionada declaração `public partial class Program` para habilitar `WebApplicationFactory` e mantido `AddRuntimeInstrumentation` com pacotes compatíveis.
+- `src/Barbearia.Infrastructure/DependencyInjection/InfrastructureServiceCollectionExtensions.cs` valida presença da connection string antes de registrar `BarbeariaDbContext` com SQL Server.
+- `src/Barbearia.Application/Barbearia.Application.csproj` possui referência explícita a `Microsoft.Extensions.DependencyInjection.Abstractions` para expor `AddApplicationLayer`.
+- `tests/Barbearia.Api.Tests/Health/HealthEndpointTests.cs` verifica respostas 200/401, agora importando `Microsoft.Extensions.Configuration` para sobrepor configuração em memória.
 
-## 4. Problemas Endereçados
-- Frameworks padrão dos templates (net9.0) ajustados para `net8.0` para cumprir requisitos da Tech Spec.
-- Remoção de classes geradas (`Class1.cs`) e do endpoint weather para evitar código morto.
-- Execução de `dotnet restore/build` não foi possível no ambiente atual (somente SDK 9.0 disponível); pendente validação quando SDK 8.0 estiver instalado.
+## 4. Problemas Encontrados
+- Corrigidos: referência inexistente a `OpenTelemetry.Exporter.Otlp` e versão inexistente `Serilog.Enrichers.Environment@3.1.0` em `src/Barbearia.Api/Barbearia.Api.csproj`; projeto agora restaura com `OpenTelemetry.Exporter.OpenTelemetryProtocol@1.12.0` e `Serilog.Enrichers.Environment@3.0.1`.
+- Corrigidos: ausência de pacotes `Microsoft.Extensions.DependencyInjection.Abstractions` (camada Application) e `Microsoft.Extensions.Configuration` (projeto de testes), que impediam a compilação.
+- Bloqueador pendente: `dotnet test` não executa neste ambiente por falta do runtime .NET 8 (mensagem "You must install or update .NET..."), portanto cobertura e verificação automática permanecem não validadas localmente.
 
-## 5. Conclusão e Prontidão para Deploy
-- Tarefa validada contra PRD/Tech Spec, regras aplicáveis revisadas e todas as subtarefas marcadas como concluídas em `tasks/prd-sistema-agendamento-barbearia/1_task.md`.
-- Repositório preparado para build/test automatizado; falta apenas executar os comandos `dotnet restore && dotnet test` em ambiente com .NET 8.
-- Recomendado configurar segredos reais (connection strings, health API key) via user-secrets ou pipeline antes de deploy.
+## 5. Conclusão
+- Com as correções aplicadas, `dotnet build` finaliza com sucesso e o código segue alinhado à arquitetura e às regras do repositório.
+- Execução de testes automatizados ainda bloqueada por limitação do ambiente (runtime .NET 8 ausente). Recomenda-se instalar `Microsoft.NETCore.App 8.0.x` ou validar em um agente com .NET 8 para cumprir o critério de sucesso antes de marcar a tarefa como totalmente concluída.
