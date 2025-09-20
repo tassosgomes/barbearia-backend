@@ -1,7 +1,0 @@
-@Barbearia.Api_HostAddress = http://localhost:5255
-
-### Health check requires the monitoring API key header.
-GET {{Barbearia.Api_HostAddress}}/health
-X-Health-Api-Key: local-development-health-key
-
-###
