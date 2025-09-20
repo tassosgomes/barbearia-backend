@@ -1,11 +1,25 @@
+<<<<<<< HEAD
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+=======
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Barbearia.Application\Barbearia.Application.csproj" />
+    <ProjectReference Include="..\Barbearia.Domain\Barbearia.Domain.csproj" />
+    <ProjectReference Include="..\Barbearia.Shared\Barbearia.Shared.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+>>>>>>> 2e21ea162011e45977563e194d64e4e0679d8483
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+<<<<<<< HEAD
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
@@ -20,4 +34,6 @@
     <ProjectReference Include="../Barbearia.Domain/Barbearia.Domain.csproj" />
   </ItemGroup>
 
+=======
+>>>>>>> 2e21ea162011e45977563e194d64e4e0679d8483
 </Project>

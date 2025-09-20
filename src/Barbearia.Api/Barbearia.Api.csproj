@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
@@ -25,3 +26,24 @@
   </ItemGroup>
 
 </Project>
+=======
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Barbearia.Application\Barbearia.Application.csproj" />
+    <ProjectReference Include="..\Barbearia.Infrastructure\Barbearia.Infrastructure.csproj" />
+    <ProjectReference Include="..\Barbearia.Shared\Barbearia.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
+>>>>>>> 2e21ea162011e45977563e194d64e4e0679d8483
