@@ -25,10 +25,10 @@ Estabelecer a solução ASP.NET Core 8 com estrutura em camadas (Domain, Applica
 - Implementar pipeline CI para build, testes unitários e publicação de artefatos.
 
 ## Subtarefas
-- [x] 1.1 Criar solution `.sln` com projetos Domain, Application, Infrastructure e Api seguindo Clean Architecture.
-- [x] 1.2 Adicionar pacotes base (Serilog, OpenTelemetry, EF Core, FluentValidation) e configurar `Program.cs` mínimo.
-- [x] 1.3 Especificar Dockerfile, compose de dev e scripts de inicialização.
-- [x] 1.4 Configurar pipeline CI/CD (GitHub Actions ou Azure DevOps) com etapas de build, testes e lint.
+- [ ] 1.1 Criar solution `.sln` com projetos Domain, Application, Infrastructure e Api seguindo Clean Architecture.
+- [ ] 1.2 Adicionar pacotes base (Serilog, OpenTelemetry, EF Core, FluentValidation) e configurar `Program.cs` mínimo.
+- [ ] 1.3 Especificar Dockerfile, compose de dev e scripts de inicialização.
+- [ ] 1.4 Configurar pipeline CI/CD (GitHub Actions ou Azure DevOps) com etapas de build, testes e lint.
 
 ## Detalhes de Implementação
 - Ver "Arquitetura do Sistema > Visão Geral dos Componentes" e "Sequenciamento de Desenvolvimento > Infraestrutura Básica" na Tech Spec.
@@ -38,9 +38,9 @@ Estabelecer a solução ASP.NET Core 8 com estrutura em camadas (Domain, Applica
 - Pipeline CI executa com sucesso build e testes de fumaça.
 - Documentação de variáveis de ambiente e containers disponível para o time.
 
-- [x] 1.0 Configurar fundação da API .NET, soluções e CI/CD ✅ CONCLUÍDA
-  - [x] 1.1 Implementação completada
-  - [x] 1.2 Definição da tarefa, PRD e tech spec validados
-  - [x] 1.3 Análise de regras e conformidade verificadas
-  - [x] 1.4 Revisão de código completada
-  - [x] 1.5 Pronto para deploy
+  - [ ] 1.0 Configurar fundação da API .NET, soluções e CI/CD ✅ CONCLUÍDA
+  - [ ] 1.1 Implementação completada
+  - [ ] 1.2 Definição da tarefa, PRD e tech spec validados
+  - [ ] 1.3 Análise de regras e conformidade verificadas
+  - [ ] 1.4 Revisão de código completada
+  - [ ] 1.5 Pronto para deploy
