@@ -1,0 +1,16 @@
+**/bin/
+**/obj/
+**/.vs/
+.git
+.gitignore
+Dockerfile
+README.md
+AGENTS.md
+prompts/
+rules/
+tasks/
+templates/
+prd/
+**/*.user
+**/*.swp
+**/*.suo

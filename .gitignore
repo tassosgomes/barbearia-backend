@@ -1,0 +1,13 @@
+bin/
+obj/
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+*.swp
+TestResults/
+.net/
+.nuget/
+sqlserver-data/
+Dockerfile.develop
