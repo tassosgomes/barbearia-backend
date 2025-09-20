@@ -1,0 +1,46 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: barbearia-api:latest
+    depends_on:
+      - sqlserver
+      - otel-collector
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__BarbeariaDatabase: Server=sqlserver,1433;Database=Barbearia;User Id=sa;Password=Your_password123;Encrypt=False;TrustServerCertificate=True
+      HealthChecks__ApiKey: ${HEALTHCHECK_API_KEY:-local-healthcheck-key}
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+    ports:
+      - "8080:8080"
+    networks:
+      - barbearia
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: Your_password123
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - barbearia
+  otel-collector:
+    image: otel/opentelemetry-collector:0.97.0
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./ops/otel-collector-config.yaml:/etc/otel-collector-config.yaml:ro
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - barbearia
+volumes:
+  sqlserver-data:
+networks:
+  barbearia:
+    driver: bridge
